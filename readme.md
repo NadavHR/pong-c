@@ -1,0 +1,1 @@
+add SDL2.dll to output folder or else the exe wont run TODO: check how to link it
