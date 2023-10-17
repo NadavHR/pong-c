@@ -87,19 +87,19 @@ void edge_bounce(ball * b){
     b->y_speed*= -1;
 }
 bool touching_padel(float location, signed int y, unsigned int length){
-    // printf("%i\n", (location) <= (y-(BALL_WIDTH/2)) && (location + length) >= (y-(BALL_WIDTH/2)));
-    // printf("%i\n", // ((location) <= (y-(BALL_WIDTH/2)) && (location + length) >= (y-(BALL_WIDTH/2)));// ||
+    // printf("%i\n", (location) <= (y-(BALL_WIDTH*0.5)) && (location + length) >= (y-(BALL_WIDTH*0.5)));
+    // printf("%i\n", // ((location) <= (y-(BALL_WIDTH*0.5)) && (location + length) >= (y-(BALL_WIDTH*0.5)));// ||
     //             // (
     //             // (location)
     //             //  <= 
-    //             //  (y+(BALL_WIDTH/2))
+    //             //  (y+(BALL_WIDTH*0.5))
     //             //  &&
     //             (location + length)
     //             >=
-    //              (y+(BALL_WIDTH/2))
+    //              (y+(BALL_WIDTH*0.5))
     //             );
-    return ((location) <= (y-(BALL_WIDTH/2)) && (location + length) >= (y-(BALL_WIDTH/2))) ||
-            ((location) <= (y+(BALL_WIDTH/2)) && (location + length) >= (y+(BALL_WIDTH/2)));
+    return ((location) <= (y-(BALL_WIDTH*0.5)) && (location + length) >= (y-(BALL_WIDTH*0.5))) ||
+            ((location) <= (y+(BALL_WIDTH*0.5)) && (location + length) >= (y+(BALL_WIDTH*0.5)));
 }
 
 void bounce_or_score(player * recieving_player, player * other_player, ball * b)
@@ -107,7 +107,9 @@ void bounce_or_score(player * recieving_player, player * other_player, ball * b)
     if (touching_padel(recieving_player->location, b->y, recieving_player->length)){
         b->x_speed *= -SPEED_BOOST; 
         edge_bounce(b);
-        b->y_speed += recieving_player->speed;
+
+        // speed boost to make sure y speed and player speed wont cancel out and have the ball travel straight 
+        b->y_speed = (b->y_speed * SPEED_BOOST) + recieving_player->speed; 
     } 
     else{
         b->x = 0;
@@ -119,27 +121,27 @@ void bounce_or_score(player * recieving_player, player * other_player, ball * b)
 }
 void update_game(game * p_g, float dt){
     // printf("%f\n",(float)(sign(p_g->p1.speed)));
-    p_g->p1.speed = ((signed short int)(P1_DOWN) - (signed short int)(P1_UP))*PLAYER_ACCEL;//*dt;  // accel
+    p_g->p1.speed = ((signed short int)(P1_DOWN) - (signed short int)(P1_UP))*PLAYER_SPEED;//*dt;  // accel
     // p_g->p1.speed = p_g->p1.speed - (float)(sign(p_g->p1.speed)* (float)(!(P1_DOWN || P1_UP)) * (min(PLAYER_DECEL*dt, dt*abs(p_g->p1.speed)))); // decel
-    p_g->p2.speed = ((signed short int)(P2_DOWN) - (signed short int)(P2_UP))*PLAYER_ACCEL;//*dt; // accel
+    p_g->p2.speed = ((signed short int)(P2_DOWN) - (signed short int)(P2_UP))*PLAYER_SPEED;//*dt; // accel
     // p_g->p2.speed = p_g->p2.speed - (float)(sign(p_g->p2.speed)* (float)(!(P2_DOWN || P2_UP)) * (min(PLAYER_DECEL*dt, dt*abs(p_g->p2.speed)))); // decel
 
     p_g->p1.location += (float) ((p_g->p1.speed)*(dt));
     p_g->p2.location += (float) ((p_g->p2.speed)*(dt));
 
-    p_g-> p1.location = (float)max(-(float)(main_window.height/2), (float)min( p_g-> p1.location, (float)main_window.height/2 - p_g->p1.length));
-    p_g-> p2.location = (float)max(-(float)(main_window.height/2), (float)min( p_g-> p2.location, (float)main_window.height/2 - p_g->p2.length));
-    p_g->b.x = (float) max( -(float)(main_window.width/2) + BALL_WIDTH, min((p_g->b.x_speed)*dt + p_g->b.x , (float)(main_window.width/2) - BALL_WIDTH));
-    p_g->b.y = (float) max( -(float)(main_window.height/2), min((p_g->b.y_speed)*dt + p_g->b.y, (float)(main_window.height/2)));
-    if (p_g->b.x == main_window.width/2 - BALL_WIDTH){ // check player 2
+    p_g-> p1.location = (float)max(-(float)(main_window.height*0.5), (float)min( p_g-> p1.location, (float)main_window.height*0.5 - p_g->p1.length));
+    p_g-> p2.location = (float)max(-(float)(main_window.height*0.5), (float)min( p_g-> p2.location, (float)main_window.height*0.5 - p_g->p2.length));
+    p_g->b.x = (float) max( -(float)(main_window.width*0.5) + BALL_WIDTH, min((p_g->b.x_speed)*dt + p_g->b.x , (float)(main_window.width*0.5) - BALL_WIDTH));
+    p_g->b.y = (float) max( -(float)(main_window.height*0.5), min((p_g->b.y_speed)*dt + p_g->b.y, (float)(main_window.height*0.5)));
+    if (p_g->b.x == main_window.width*0.5 - BALL_WIDTH){ // check player 2
         bounce_or_score(&(p_g->p2), &(p_g->p1), &(p_g->b));
     }
-    else if (p_g->b.x ==  -((signed int)main_window.width/2) + BALL_WIDTH) // check player 1
+    else if (p_g->b.x ==  -((signed int)main_window.width*0.5) + BALL_WIDTH) // check player 1
     {
         bounce_or_score(&(p_g->p1), &(p_g->p2), &(p_g->b));
     }
 
-    if ((p_g -> b.y == -((signed int)main_window.height/2)) || (p_g -> b.y == (signed int)main_window.height/2))
+    if ((p_g -> b.y == -((signed int)main_window.height*0.5)) || (p_g -> b.y == (signed int)main_window.height*0.5))
     {
         edge_bounce(&(p_g->b));
     } 
@@ -166,16 +168,16 @@ void draw()
     SDL_Rect b = {
         .h = BALL_WIDTH,
         .w = BALL_WIDTH,
-        .x = (int)main_game.b.x + (int)((main_window.width - BALL_WIDTH)/2),
-        .y = (int)main_game.b.y + (int)((main_window.height - BALL_WIDTH)/2)
+        .x = (int)main_game.b.x + (int)((main_window.width - BALL_WIDTH)*0.5),
+        .y = (int)main_game.b.y + (int)((main_window.height - BALL_WIDTH)*0.5)
     };
 
     SDL_RenderFillRect(renderer, &b);
     
-    // for (int i = main_game.b.y + ((main_window.height - BALL_WIDTH)/2) ;
-    //              i < main_game.b.y + ((main_window.height + BALL_WIDTH)/2); i++){
-    //     for (int j = main_game.b.x + ((main_window.width - BALL_WIDTH)/2);
-    //              j < main_game.b.x + ((main_window.width + BALL_WIDTH)/2); j++){
+    // for (int i = main_game.b.y + ((main_window.height - BALL_WIDTH)*0.5) ;
+    //              i < main_game.b.y + ((main_window.height + BALL_WIDTH)*0.5); i++){
+    //     for (int j = main_game.b.x + ((main_window.width - BALL_WIDTH)*0.5);
+    //              j < main_game.b.x + ((main_window.width + BALL_WIDTH)*0.5); j++){
     //         // if (range(i - (main_game.b.y + (main_window.height / 2)), BALL_WIDTH) && range(j -(main_game.b.x + (main_window.width / 2)), BALL_WIDTH)){
     //         //     ch = FULL;
     //         SDL_RenderDrawPoint(renderer, j, i);
@@ -183,15 +185,15 @@ void draw()
     //         // main_window.field[i * main_window.width + j] = ch; // render
     //     }
     // }
-    for (int i = (int)main_game.p1.location + (main_window.height/2);
-         i < main_game.p1.location + (main_window.height/2) + main_game.p1.length; i++){
+    for (int i = (int)main_game.p1.location + (main_window.height*0.5);
+         i < main_game.p1.location + (main_window.height*0.5) + main_game.p1.length; i++){
         for (int j = 0; j < PADDLE_WIDTH; j++){
             // main_window.field[(i + main_game.p1.location + (main_window.height / 2)) * main_window.width + main_window.width - 1 ] = FULL;
             SDL_RenderDrawPoint(renderer, j, i);
         }
     }
-    for (int i = (int)main_game.p2.location + (main_window.height/2);
-         i < main_game.p2.location + (main_window.height/2) + main_game.p2.length; i++){
+    for (int i = (int)main_game.p2.location + (main_window.height*0.5);
+         i < main_game.p2.location + (main_window.height*0.5) + main_game.p2.length; i++){
         for (int j = 0; j < PADDLE_WIDTH; j++){
             // main_window.field[(i + main_game.p2.location + (main_window.height / 2)) * main_window.width] = FULL;
             SDL_RenderDrawPoint(renderer, main_window.width - j, i);

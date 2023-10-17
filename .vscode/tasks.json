@@ -6,7 +6,7 @@
             "command": "C:\\msys64\\mingw64\\bin\\gcc.exe",
             "args": [
                 // "-fdiagnostics-color=always",
-                "-g", // commented for release
+                "-g", // for debug
                 // "-s", // for release
                 // "DNDEBUG", // for release
                 "${file}",
@@ -31,11 +31,12 @@
                 // "-luuid", 
                 "-lSDL2main",
                 "-lSDL2",
-                // "-static-libgcc",
+                "-static-libgcc",
+                "-Bstatic",
                 "-o",
-                "${fileDirname}\\output\\${fileBasenameNoExtension}.exe"
-                // "-O3",
-                // "-Wall" // for release
+                "${fileDirname}\\output\\${fileBasenameNoExtension}.exe",
+                // "-O3",// for release
+                "-Wall" 
             ],
             "options": {
                 "cwd": "${fileDirname}"

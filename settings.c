@@ -1,7 +1,8 @@
 #define FRAME_RATE 1000
 #define BALL_SPEED 100
-#define PLAYER_ACCEL 500
-#define PLAYER_DECEL 10000
+#define PLAYER_SPEED 500
+// #define PLAYER_ACCEL 500
+// #define PLAYER_DECEL 10000
 #define LEN 100
 #define EMPTY ' '
 #define FULL '#'
