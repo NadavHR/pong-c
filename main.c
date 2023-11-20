@@ -8,7 +8,6 @@
 // #define DELTA_TIME ((float)(clock() - start))/CLOCKS_PER_SEC
 #define DELTA_TIME ((float)(SDL_GetTicks() - start))*0.001
 
-
 #define max(a,b) (((a) > (b)) ? (a) : (b))
 #define min(a,b) (((a) < (b)) ? (a) : (b))
 #define range(a, b) (abs(a) <= b)
@@ -86,6 +85,7 @@ game main_game = {
 void edge_bounce(ball * b){
     b->y_speed*= -1;
 }
+
 bool touching_padel(float location, signed int y, unsigned int length){
     // printf("%i\n", (location) <= (y-(BALL_WIDTH*0.5)) && (location + length) >= (y-(BALL_WIDTH*0.5)));
     // printf("%i\n", // ((location) <= (y-(BALL_WIDTH*0.5)) && (location + length) >= (y-(BALL_WIDTH*0.5)));// ||
@@ -152,6 +152,7 @@ void update_game(game * p_g, float dt){
 
 
 
+
 void draw()
 {
     SDL_RenderClear(renderer);
@@ -202,6 +203,7 @@ void draw()
     SDL_RenderPresent(renderer);
 }
 
+
 void init() {
     SDL_Init(SDL_INIT_EVERYTHING);
     SDL_CreateWindowAndRenderer(WIDTH, HEIGHT, 0, &win, &renderer);
@@ -219,12 +221,7 @@ void init() {
 }
 void update(float dt)
 {
-    if (SDL_PollEvent(&window_event))
-    {
-        if (window_event.type == SDL_QUIT){
-            main_game.over = true;
-        }
-    }
+    
     // start = clock();
     start = SDL_GetTicks();
     update_game(&main_game, dt);
@@ -234,31 +231,27 @@ void update(float dt)
 // int SDLMAIN_DECLSPEC SDL_main(int argc, char *argv[])
 int main(int argc, char *argv[])
 {
-    char title[] = "pong";
+    
+    char title[128];
     init();
-    SDL_SetWindowTitle(win, &title);
     while (!main_game.over)
     {
-        
+        if (SDL_PollEvent(&window_event))
+        {
+            if (window_event.type == SDL_QUIT){
+                main_game.over = true;
+            }
+        }
         check_press(&window_event);
         float dtime = DELTA_TIME;
-        if (dtime >= (1.0/FRAME_RATE)){
+        
+        if (dtime*FRAME_RATE >= 1.0){
             update(dtime);
             // printf("%i\n",main_game.p2.speed);
 
-            sprintf(&title, "pong    fps: %f\n", 1.0/dtime);
+            sprintf(&title, "pong    fps: %f    score: %i:%i\n", 1.0/dtime, main_game.p1.score, main_game.p2.score);
             SDL_SetWindowTitle(win, &title);
-            // for (int i = 0; i < main_window.height; i++){
-            //     for (int j = 0; j < main_window.width; j++){
-            //         // printf("%c",(unsigned char)main_window.field[i*main_window.width + j]);
-            //     }
-            //     // printf("\n");
-            // }
-            // printf("\n");
-            // printf("%i\n", P1_UP);
-            // printf("%i\n", P1_DOWN); 
-            // printf("%i\n", P2_UP );
-            // printf("%i\n", P2_DOWN);
+
         }
 
         //printf("%i\n",DELTA_TIME);

@@ -11,10 +11,10 @@
                 // "DNDEBUG", // for release
                 "${file}",
                 "-IC:/dev_stuff/SDL2/x86_64-w64-mingw32/include",
-                "-IC:/dev_stuff/SDL2/x86_64-w64-mingw32/bin",
                 "-LC:/dev_stuff/SDL2/x86_64-w64-mingw32/lib",
-                "-LC:/dev_stuff/SDL2/x86_64-w64-mingw32/bin",
                 "-lmingw32",
+                "-lSDL2main",
+                "-lSDL2",
                 // "-mwindows", // disable terminal 
                 // "-lm", 
                 // "-ldinput8", 
@@ -29,8 +29,7 @@
                 // "-lshell32", 
                 // "-lversion",
                 // "-luuid", 
-                "-lSDL2main",
-                "-lSDL2",
+                
                 "-static-libgcc",
                 "-Bstatic",
                 "-o",

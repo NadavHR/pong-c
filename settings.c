@@ -1,4 +1,4 @@
-#define FRAME_RATE 1000
+#define FRAME_RATE 100000
 #define BALL_SPEED 100
 #define PLAYER_SPEED 500
 // #define PLAYER_ACCEL 500
@@ -7,7 +7,7 @@
 #define EMPTY ' '
 #define FULL '#'
 #define SPEED_BOOST 1.1
-#define MAX_SCORE 10
+#define MAX_SCORE 5
 #define WIDTH 690
 #define HEIGHT 420
 #define BALL_WIDTH 10
