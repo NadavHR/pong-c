@@ -1,5 +1,9 @@
 {
-    "files.associations": {
-        "conio.h": "c"
-    }
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "c:\\Users\\nadav\\Desktop\\CodeStuff\\c\\pong\\pong-c",
+            "binaryPath": "c:\\Users\\nadav\\Desktop\\CodeStuff\\c\\pong\\pong-c\\main.exe",
+            "binaryArgs": []
+        }
+    ]
 }

@@ -1,4 +1,4 @@
-#define FRAME_RATE 100000
+#define FRAME_RATE 1000
 #define BALL_SPEED 100
 #define PLAYER_SPEED 500
 // #define PLAYER_ACCEL 500

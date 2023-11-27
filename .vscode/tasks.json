@@ -1,54 +1,11 @@
 {
+    "version": "2.0.0",
     "tasks": [
         {
-            "type": "cppbuild",
-            "label": "C/C++: gcc.exe build active file",
-            "command": "C:\\msys64\\mingw64\\bin\\gcc.exe",
-            "args": [
-                // "-fdiagnostics-color=always",
-                "-g", // for debug
-                // "-s", // for release
-                // "DNDEBUG", // for release
-                "${file}",
-                "-IC:/dev_stuff/SDL2/x86_64-w64-mingw32/include",
-                "-LC:/dev_stuff/SDL2/x86_64-w64-mingw32/lib",
-                "-lmingw32",
-                "-lSDL2main",
-                "-lSDL2",
-                // "-mwindows", // disable terminal 
-                // "-lm", 
-                // "-ldinput8", 
-                // "-ldxguid", 
-                // "-ldxerr8", 
-                // "-luser32", 
-                // "-lgdi32", 
-                // "-lwinmm", 
-                // "-limm32", 
-                // "-lole32", 
-                // "-loleaut32", 
-                // "-lshell32", 
-                // "-lversion",
-                // "-luuid", 
-                
-                "-static-libgcc",
-                "-Bstatic",
-                "-o",
-                "${fileDirname}\\output\\${fileBasenameNoExtension}.exe",
-                // "-O3",// for release
-                "-Wall" 
-            ],
-            "options": {
-                "cwd": "${fileDirname}"
-            },
-            "problemMatcher": [
-                "$gcc"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "detail": "no details"
+            "type": "shell",
+            "label": "make",
+            "args": [],
+            "command": "make"
         }
-    ],
-    "version": "2.0.0"
+    ]
 }
